@@ -1,0 +1,87 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RingCaptcha\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-19 14:22-0600\n"
+"PO-Revision-Date: 2014-05-19 14:24-0600\n"
+"Last-Translator: Esteban <rivenvirus@gmail.com>\n"
+"Language-Team: RingCaptcha <support@ringcaptcha.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: SPAIN\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../plugin.php:130
+msgid "Settings saved"
+msgstr "Configuraciones guardadas"
+
+#: ../plugin.php:144
+msgid "RingCaptcha"
+msgstr "RingCaptcha"
+
+#: ../plugin.php:147
+msgid "Sign up at <a href=\"http://www.ringcaptcha.com\" target=\"_blank\">RingCaptcha</a> website, create a widget with your domain and insert the App and Secret Keys below. "
+msgstr "Registrate en el sitio de <a href=\"http://www.ringcaptcha.com\" target=\"_blank\">RingCaptcha</a>  crea tu widget con tu dominio e ingresa el App y Secret Keys debajo."
+
+#: ../plugin.php:195
+msgid "Save Settings"
+msgstr "Guardar configuraciones"
+
+#: ../plugin.php:220
+#: ../plugin.php:329
+msgid "Phone Verification is required to proceed."
+msgstr "La verificación telefónica es requerida."
+
+#: ../plugin.php:226
+#: ../plugin.php:239
+msgid "<strong>ERROR</strong>: Phone Verification is required to proceed."
+msgstr "<strong>ERROR</strong>: La verificación telefónica es requerida."
+
+#: ../plugin.php:333
+msgid "Phone"
+msgstr "Teléfono"
+
+#: ../plugin.php:345
+msgid "Activate RingCaptcha"
+msgstr "Activar RingCaptcha"
+
+#: ../plugin.php:346
+#: ../plugin.php:352
+msgid "Active RingCaptcha for the billing phone."
+msgstr "Activa RingCaptcha en el checkout"
+
+#~ msgid "RingCaptcha for Gravity Forms"
+#~ msgstr "RingCaptcha para Gravity Forms"
+
+#~ msgid "click to delete this field"
+#~ msgstr "click para eliminar este campo"
+
+#~ msgid "Delete"
+#~ msgstr "Eliminar"
+
+#~ msgid "click to edit this field"
+#~ msgstr "click para editar este campo"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "Only one RingCaptcha field can be added to the form."
+#~ msgstr "Sólo un campo RingCaptcha se puede añadir al formulario."
+
+#~ msgid ""
+#~ "Sign up at RingCaptcha&apos;s website to get your App and Secret keys, "
+#~ "used to authenticate with <a href=\"http://www.ringcaptcha.com\" target="
+#~ "\"_blank\">RingCaptcha</a>"
+#~ msgstr ""
+#~ "Regístrate en la página web de RingCaptcha para obtener las claves de la "
+#~ "aplicación que se requieren para autenticar el formulario con <a href="
+#~ "\"http://www.ringcaptcha.com\" target=\"_blank\">RingCaptcha</a>"
+
+#, fuzzy
+#~ msgid "Gravity Forms "
+#~ msgstr "RingCaptcha para Gravity Forms"
