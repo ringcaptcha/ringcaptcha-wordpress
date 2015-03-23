@@ -39,7 +39,7 @@ class WPRingCaptcha{
 	const sluglang = 'rc_';	
 
 
-	public static countries = array
+	public static $countries = array
 	(
 		'AF' => 'Afghanistan',
 		'AX' => 'Aland Islands',
@@ -288,7 +288,7 @@ class WPRingCaptcha{
 		'ZW' => 'Zimbabwe',
 	);
 
-	public static languages = array(
+	public static $languages = array(
 		"en" => "English",
 		"es" => "Spanish",
 		"pt" => "Portuguese",
@@ -443,7 +443,7 @@ class WPRingCaptcha{
 					  </th>
 					  <td>
 					    <select id="<?=self::slug?>_language" name="<?=self::slug?>_language" style="width: 50%;">
-					    	<?php foreach (self::languages as $key => $value) {?>
+					    	<?php foreach (self::$languages as $key => $value) {?>
 					    		<option value="<?php echo $key;?>" <?php selected($settings["language"],$key);?>><?php echo $value;?></option>
 					    	<?php }?>
 					    </select>
@@ -455,7 +455,7 @@ class WPRingCaptcha{
 					  </th>
 					  <td>
 					    <select id="<?=self::slug?>_default_country" name="<?=self::slug?>_default_country" style="width: 50%;">
-					    	<?php foreach (self::countries as $key => $value) {?>
+					    	<?php foreach (self::$countries as $key => $value) {?>
 					    		<option value="<?php echo $key;?>" <?php selected($settings["default_country"],$key);?>><?php echo $value;?></option>
 					    	<?php }?>
 					    </select>
