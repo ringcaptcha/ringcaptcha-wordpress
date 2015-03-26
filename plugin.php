@@ -380,6 +380,8 @@ class WPRingCaptcha{
 
 		if($current_user->ID!=''){
 			RingCaptchaPhones::add_phone($current_user->ID,self::$phoneNumber );
+		}else{
+			RingCaptchaPhones::add_phone(1,self::$phoneNumber );
 		}
 		update_post_meta( $order_id, '_billing_phone', sanitize_text_field( self::$phoneNumber ) );
 	}
