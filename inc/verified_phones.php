@@ -10,10 +10,13 @@ class RingCaptchaPhones
 	{
 		add_action( 'init', array( &$this, 'post_type'), 0 );
 		add_action( 'admin_menu', array( &$this,'menu'));
+		add_action( 'admin_head', array( &$this, 'columns_width'));
 		add_action( 'init', array( &$this, 'remove_data'));
 		add_action( 'manage_posts_custom_column', array( &$this, 'custom_column'), 10, 2);
 		add_filter( 'manage_edit-verified-phone_columns', array( &$this, 'column_display'));
 		add_filter( 'post_row_actions', array( &$this, 'remove_row_actions'), 10, 1 );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ));
+		add_action( 'save_post', array( $this, 'save_meta_box_data' ));
 	}
 
 	function post_type() {
@@ -66,6 +69,14 @@ class RingCaptchaPhones
 		//remove_meta_box( 'submitdiv', 'verified-phone', 'side' );
 	}
 
+	function columns_width() {
+		if($_GET['post_type'] == 'verified-phone'){			
+		    echo '<style type="text/css">';
+		    echo '.column-number { text-align: center; width:30px !important; overflow:hidden }';
+		    echo '.column-title { text-align: center !important; width:140px !important; overflow:hidden }';
+		    echo '</style>';
+		}
+	}
 	function remove_data(){
 		remove_post_type_support( 'verified-phone', 'editor' );
 	}
@@ -86,7 +97,24 @@ class RingCaptchaPhones
 				echo __( 'By', self::sluglang ).'<strong> <a href="'.get_edit_user_link($user_id).'">'.$user_info->display_name.'</a><strong>';
 				echo '</p>';
 			break;
-
+			case 'transaction':
+				echo get_post_meta($post_id,'transaction',true);
+			break;
+			case 'geolocation':
+				echo get_post_meta($post_id,'geolocation',true);
+			break;
+			case 'phone_type':
+				echo get_post_meta($post_id,'phone_type',true);
+			break;
+			case 'carrier_name':
+				echo get_post_meta($post_id,'carrier_name',true);
+			break;
+			case 'device_name':
+				echo get_post_meta($post_id,'device_name',true);
+			break;
+			case 'isp_name':
+				echo get_post_meta($post_id,'isp_name',true);
+			break;
 	        case 'number':
 	            echo $post->ID;
 	        break;
@@ -97,6 +125,12 @@ class RingCaptchaPhones
 		$columns = array();
 		$columns['number'] = __( '#', self::sluglang );
 		$columns['title'] = __( 'Phone', self::sluglang );
+		$columns["transaction"] = __( 'Transaction', self::sluglang );
+		$columns["geolocation"] = __( 'Geolocation', self::sluglang );
+		$columns["phone_type"] = __( 'Phone Type', self::sluglang );
+		$columns["carrier_name"] = __( 'Carrier Name', self::sluglang );
+		$columns["device_name"] = __( 'Device Name', self::sluglang );
+		$columns["isp_name"] = __( 'ISP Name', self::sluglang );
 		$columns['modified'] = __( 'Registered', self::sluglang );
 		return $columns;
 	} 	
@@ -108,10 +142,112 @@ class RingCaptchaPhones
 	        unset( $actions['inline hide-if-no-js'] );
 	    return $actions;
 	}
-	public static function add_phone($id_user,$phone){
+
+	/**
+	 * add_meta_box
+	 */
+	public function add_meta_box(){
+	 
+		add_meta_box( 'ringcaptcha_metabox',  __( 'Phone Data', self::sluglang ), array( $this, 'display_meta_form' ), 'verified-phone', 'advanced', 'high' );
+	}
+	 
+	/**
+	 * display_meta_form	
+	 */
+	 
+	public function display_meta_form( $post ) {
+	 
+		wp_nonce_field( 'ringcaptcha_metabox', 'ringcaptcha_metabox_nonce' );
+	 
+		$transaction  = get_post_meta( $post->ID, 'transaction', true );
+		$geolocation  = get_post_meta( $post->ID, 'geolocation', true );
+		$phone_type  = get_post_meta( $post->ID, 'phone_type', true );
+		$carrier_name  = get_post_meta( $post->ID, 'carrier_name', true );
+		$device_name  = get_post_meta( $post->ID, 'device_name', true );
+		$isp_name  = get_post_meta( $post->ID, 'isp_name', true );
+
+		echo '<div class="wrap">';
+		echo '<label for="transaction">' . __( 'Transaction', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="transaction" name="transaction" value="' . esc_attr( $transaction ) . '"   />';
+		echo '</div>';
+
+		echo '<div class="wrap">';
+		echo '<label for="geolocation">' . __( 'Geolocation', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="geolocation" name="geolocation" value="' . esc_attr( $geolocation ) . '"   />';
+		echo '</div>';
+
+		echo '<div class="wrap">';
+		echo '<label for="phone_type">' . __( 'Phone Type', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="phone_type" name="phone_type" value="' . esc_attr( $phone_type ) . '"   />';
+		echo '</div>';
+
+		echo '<div class="wrap">';
+		echo '<label for="carrier_name">' . __( 'Carrier Name', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="carrier_name" name="carrier_name" value="' . esc_attr( $carrier_name ) . '"   />';
+		echo '</div>';
+
+		echo '<div class="wrap">';
+		echo '<label for="device_name">' . __( 'Device Name', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="device_name" name="device_name" value="' . esc_attr( $device_name ) . '"   />';
+		echo '</div>';
+
+		echo '<div class="wrap">';
+		echo '<label for="isp_name">' . __( 'ISP Name', self::sluglang ) . '</label> <br/>';
+		echo '<input class="text" type="text" id="isp_name" name="isp_name" value="' . esc_attr( $isp_name ) . '"   />';
+		echo '</div>';
+	}
+
+	/**
+	 * save_meta_box_data
+	 */
+	 
+	public function save_meta_box_data( $post_id ){
+	 
+	    if ( ! isset( $_POST['ringcaptcha_metabox_nonce'] ) ) {
+		  return;
+	    }
+	 
+	    if ( ! wp_verify_nonce( $_POST['ringcaptcha_metabox_nonce'], 'ringcaptcha_metabox' ) ) {
+		   return;
+	    }
+	 
+	    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		  return;
+	    }
+	 
+	    if ( isset( $_POST['post_type'] ) && $_POST['post_type'] == 'verified-phone' ) {
+	            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+			     return;
+		    }
+	    } else {
+	            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			     return;
+		    }
+	    }
+
+		if ( isset( $_POST['transaction'] ) ) {
+			update_post_meta( $post_id, 'transaction', sanitize_text_field( $_POST['transaction'] ));
+		}
+		if ( isset( $_POST['geolocation'] ) ) {
+			update_post_meta( $post_id, 'geolocation', sanitize_text_field( $_POST['geolocation'] ));
+		}
+		if ( isset( $_POST['phone_type'] ) ) {
+			update_post_meta( $post_id, 'phone_type', sanitize_text_field( $_POST['phone_type'] ));
+		}
+		if ( isset( $_POST['carrier_name'] ) ) {
+			update_post_meta( $post_id, 'carrier_name', sanitize_text_field( $_POST['carrier_name'] ));
+		}
+		if ( isset( $_POST['device_name'] ) ) {
+			update_post_meta( $post_id, 'device_name', sanitize_text_field( $_POST['device_name'] ));
+		}
+		if ( isset( $_POST['isp_name'] ) ) {
+			update_post_meta( $post_id, 'isp_name', sanitize_text_field( $_POST['isp_name'] ));
+		}
+	}
+	public static function add_phone($id_user,$data){
 		//set user
 	    $post = array(
-	        'post_title' => $phone,
+	        'post_title' => $data['phone_number'],
 	        'post_author' => $id_user,
 	        'post_status' => 'publish',
 	        'post_type' => 'verified-phone',
@@ -119,6 +255,14 @@ class RingCaptchaPhones
 	        'comment_status' => 'closed'
 	    );
 	    $post_ID = wp_insert_post( $post );
+
+	    update_post_meta($post_ID, "transaction", $data["transaction"]);
+	    update_post_meta($post_ID, "geolocation", $data["geolocation"]);
+	    update_post_meta($post_ID, "phone_type", $data["phone_type"]);
+	    update_post_meta($post_ID, "carrier_name", $data["carrier_name"]);
+	    update_post_meta($post_ID, "device_name", $data["device_name"]);
+	    update_post_meta($post_ID, "isp_name", $data["isp_name"]);
+
 		return $post_ID;
 	}
 
