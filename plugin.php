@@ -81,6 +81,11 @@ class WPRingCaptcha{
 				add_action( 'personal_options_update', array( &$this, 'save_ringcaptcha_profile_field' ));
 				add_action( 'edit_user_profile_update', array( &$this, 'save_ringcaptcha_profile_field' ));
 			}
+			if($settings['form_comments'] == '1'){
+				add_action( 'comment_form_after_fields', array( &$this, 'comment_form'), 1 );
+				add_action( 'comment_form_logged_in_after', array( &$this, 'comment_form'), 1 );
+				add_filter( 'preprocess_comment', array( &$this,'comment_post') );
+			}		
 
 			//scripts
 			add_action( 'login_footer',  array( &$this, 'javascript' ));
@@ -153,6 +158,7 @@ class WPRingCaptcha{
 			  "form_login" => trim($_POST[self::slug.'_form_login']),
 			  "form_register" => trim($_POST[self::slug.'_form_register']),
 			  "form_lostpassword" => trim($_POST[self::slug.'_form_lostpassword']),
+			  "form_comments" => trim($_POST[self::slug.'_form_comments']),
 			  "widget" => trim($_POST[self::slug.'_widget']),
 			);
 
@@ -245,7 +251,7 @@ class WPRingCaptcha{
 				    	</td>
 				    </tr>
 				</table>
-				<p><strong><?php _e("Example",self::sluglang);?></strong>: [ringcaptcha lang="es" country="ES"]</p>
+				<p><strong><?php _e("Example",self::sluglang);?></strong>: [ringcaptcha lang="es" country="ES" appkey=""]</p>
 				<h2><?php _e('Wordpress Forms')?></h2>
 				<p>Activate RingCaptcha to verify the user</p>
 				<table class="form-table">
@@ -263,6 +269,14 @@ class WPRingCaptcha{
 				      </th>
 				      <td>
 				        <input type="checkbox" id="<?=self::slug?>_form_register" name="<?=self::slug?>_form_register" value="1" <?=($settings["form_register"] == '1')?'checked':''?> />
+				      </td>
+				    </tr>
+				    <tr>
+				      <th scope="row" style="width: 100px;">
+				        <label for="<?=self::slug?>_form_comments"><?php _e('Comments Form',self::sluglang )?></label>
+				      </th>
+				      <td>
+				        <input type="checkbox" id="<?=self::slug?>_form_comments" name="<?=self::slug?>_form_comments" value="1" <?=($settings["form_comments"] == '1')?'checked':''?> />
 				      </td>
 				    </tr>
 				    <tr>
@@ -392,7 +406,55 @@ class WPRingCaptcha{
 		</table>
 	<?php
 	}
+	/**
+	*	Register Form Ringcaptcha
+	**/
+	function comment_form() {
+		$settings = get_option(self::slug);	 
 
+		/* Skip captcha if user is logged in and the settings allow */
+		if ( is_user_logged_in()) {
+			return true;
+		}
+		echo '<p class="cptch_block">';
+		echo '<label>' . __( "Phone Verification.", self::sluglang ) . '<span class="required"> *</span></label>';
+		echo '<br />';
+		self::ringcaptcha_form();
+		self::javascript();
+		echo '</p>';
+
+		remove_action( 'comment_form', array(&$this,'comment_form') );
+
+		return true;
+	}
+
+	function comment_post(){
+		if ( is_user_logged_in() && 1 != $settings['form_comments'] ) {
+			return $comment;
+		}
+
+		/* Skip captcha for comment replies from the admin menu */
+		if ( isset( $_REQUEST['action'] ) && 'replyto-comment' == $_REQUEST['action'] &&
+		( check_ajax_referer( 'replyto-comment', '_ajax_nonce', false ) || check_ajax_referer( 'replyto-comment', '_ajax_nonce-replyto-comment', false ) ) ) {
+			/* Skip capthca */
+			return $comment;
+		}
+		/* Skip captcha for trackback or pingback */
+		if ( '' != $comment['comment_type'] && 'comment' != $comment['comment_type'] ) {
+			/* Skip captcha */
+			return $comment;
+		}
+
+		$result = self::ringcaptcha_validate();
+	    if ( $result===FALSE ){
+			wp_die( __( "Phone Verification is required to proceed.", self::sluglang ) );
+	    }else if($result){
+			return( $comment );	    	
+	    }else{
+			wp_die( __( 'Error', self::sluglang ) . ':&nbsp' . __( "Phone Verification is required to proceed.", self::sluglang ) . ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ? '' : ' ' . __( "Click the BACK button on your browser, and try again.", self::sluglang ) ) );	    	
+	    }
+
+	}
 	/**
 	* Shortcodes
 	**/
@@ -402,12 +464,12 @@ class WPRingCaptcha{
 		
 	    $atts = shortcode_atts( array(
 	        'lang' => $settings["language"],
-	        'key' => $settings["public_key"],
+	        'appkey' => $settings["public_key"],
 	        'country' => $settings["default_country"],
 	    ), $atts );
 
 		$shortcode .= "<style type='text/css'>#ringcaptcha_widget{display: inline-block;}body.login #login{width: 451px !important;}</style>";
-		$shortcode .= '<div data-widget data-app="'.$atts["key"].'" data-locale="'.$atts["lang"].'" data-mode="onboarding"></div>';
+		$shortcode .= '<div data-widget data-app="'.$atts["appkey"].'" data-locale="'.$atts["lang"].'" data-mode="onboarding"></div>';
 		$shortcode .= '<script type="text/javascript" charset="UTF-8" src="//cdn.ringcaptcha.com/widget/v2/bundle.min.js"></script>';
 		$shortcode .= '<script type="text/javascript">';
 		$shortcode .= '	var country = "'.$atts["country"].'";$("[data-widget]").on("ready.rc.widget", function () {$(this).find("[data-country-iso=\''.$atts["country"].'\']").click();});';

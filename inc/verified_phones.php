@@ -60,10 +60,10 @@ class RingCaptchaPhones
 
 	function menu()
 	{
-		global $submenu;
+		global $submenu, $pagenow;
 		// replace my_type with the name of your post type
 		unset($submenu['edit.php?post_type=verified-phone'][10]);
-		if (isset($_GET['post_type']) && $_GET['post_type'] == 'verified-phone') {
+		if (isset($_GET['post_type']) && $_GET['post_type'] == 'verified-phone' && in_array($pagenow, array( 'post-new.php' )) ) {
 		    echo '<style type="text/css">#favorite-actions, .add-new-h2, .tablenav { display:none; }</style>';
 		}
 		//remove_meta_box( 'submitdiv', 'verified-phone', 'side' );
