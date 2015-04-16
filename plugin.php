@@ -62,8 +62,8 @@ class WPRingCaptcha{
 			}
 
 			if($settings['form_lostpassword'] == '1'){			
-				add_action( 'lostpassword_form', array( &$this, 'ringcaptcha_form' ));
-				add_action( 'lostpassword_post', array( &$this, 'ringcaptcha_lost_password' ), 10, 3);
+				//add_action( 'lostpassword_form', array( &$this, 'ringcaptcha_form' ));
+				//add_action( 'lostpassword_post', array( &$this, 'ringcaptcha_lost_password' ), 10, 3);
 			}
 
 			if($settings['form_register'] == '1'){			
@@ -279,14 +279,14 @@ class WPRingCaptcha{
 				        <input type="checkbox" id="<?=self::slug?>_form_comments" name="<?=self::slug?>_form_comments" value="1" <?=($settings["form_comments"] == '1')?'checked':''?> />
 				      </td>
 				    </tr>
-				    <tr>
+				    <?php /*<tr>
 				      <th scope="row" style="width: 100px;">
 				        <label for="<?=self::slug?>_form_lostpassword"><?php _e('Lost Password Form',self::sluglang );?>	</label>
 				      </th>
 				      <td>
 				        <input type="checkbox" id="<?=self::slug?>_form_lostpassword" name="<?=self::slug?>_form_lostpassword" value="1" <?=($settings["form_lostpassword"] == '1')?'checked':''?> />
 				      </td>
-				    </tr>
+				    </tr>*/?>
 			  </table>
 				<p class="submit">
 				  <input type="Submit" value="<?php _e("Save Settings", self::sluglang); ?>" class="button-primary settings_savebutton"/>
