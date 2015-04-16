@@ -2,56 +2,78 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RingCaptcha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-19 14:22-0600\n"
-"PO-Revision-Date: 2014-05-19 14:22-0600\n"
-"Last-Translator: Esteban <rivenvirus@gmail.com>\n"
+"POT-Creation-Date: 2015-03-23 10:01-0600\n"
+"PO-Revision-Date: 2015-03-23 10:01-0600\n"
+"Last-Translator: Satiago Pérez <santiago@sorcode.com>\n"
 "Language-Team: RingCaptcha <support@ringcaptcha.com>\n"
-"Language: \n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;__\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: UNITED STATES\n"
+"X-Generator: Poedit 1.6.10\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../plugin.php:130
+#: ../plugin.php:402
 msgid "Settings saved"
 msgstr ""
 
-#: ../plugin.php:144
+#: ../plugin.php:418
 msgid "RingCaptcha"
 msgstr ""
 
-#: ../plugin.php:147
-msgid "Sign up at <a href=\"http://www.ringcaptcha.com\" target=\"_blank\">RingCaptcha</a> website, create a widget with your domain and insert the App and Secret Keys below. "
+#: ../plugin.php:421
+msgid ""
+"Sign up at <a href=\"http://www.ringcaptcha.com\" target=\"_blank"
+"\">RingCaptcha</a> website, create a widget with your domain and insert the "
+"App and Secret Keys below. "
 msgstr ""
 
-#: ../plugin.php:195
+#: ../plugin.php:442
+msgid "Language"
+msgstr ""
+
+#: ../plugin.php:454
+msgid "Default Country"
+msgstr ""
+
+#: ../plugin.php:476
+msgid "Active Forms"
+msgstr ""
+
+#: ../plugin.php:480
+msgid "Login Form"
+msgstr ""
+
+#: ../plugin.php:488
+msgid "Register Form"
+msgstr ""
+
+#: ../plugin.php:496
+msgid "Lost Password Form"
+msgstr ""
+
+#: ../plugin.php:504
 msgid "Save Settings"
 msgstr ""
 
-#: ../plugin.php:220
-#: ../plugin.php:329
+#: ../plugin.php:526 ../plugin.php:635
 msgid "Phone Verification is required to proceed."
 msgstr ""
 
-#: ../plugin.php:226
-#: ../plugin.php:239
+#: ../plugin.php:532 ../plugin.php:545
 msgid "<strong>ERROR</strong>: Phone Verification is required to proceed."
 msgstr ""
 
-#: ../plugin.php:333
+#: ../plugin.php:639
 msgid "Phone"
 msgstr ""
 
-#: ../plugin.php:345
+#: ../plugin.php:651
 msgid "Activate RingCaptcha"
 msgstr ""
 
-#: ../plugin.php:346
-#: ../plugin.php:352
+#: ../plugin.php:652 ../plugin.php:658
 msgid "Active RingCaptcha for the billing phone."
 msgstr ""
-
