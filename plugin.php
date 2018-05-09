@@ -299,7 +299,7 @@ class WPRingCaptcha{
 	function ringcaptcha_form($pageid = '') {		                  
   		$settings = get_option(self::slug);   
     	echo "<style type='text/css'>#ringcaptcha_widget{display: inline-block;}body.login #login{width: 451px !important;}</style>";    	
-		echo '<div data-widget data-app="'.$settings["public_key"].'" data-locale="'.$settings["language"].'" data-mode="'.$settings["widget"].'" data-type="'.$settings["datatype"].'"></div>';
+		echo '<div data-widget data-app="'.$settings["public_key"].'" data-locale="'.$settings["language"].'" data-mode="'.$settings["widget"].'"></div>';
     }
 
 	/**
